@@ -1,0 +1,15 @@
+---
+- name: "Import variables tasks."
+  ansible.builtin.import_tasks: "set_vars.yml"
+
+- name: "Import preflight tasks."
+  ansible.builtin.import_tasks: "preflight.yml"
+
+- name: "Import installation tasks."
+  ansible.builtin.import_tasks: "setup.yml"
+
+- name: "Import configuration tasks."
+  ansible.builtin.import_tasks: "configure.yml"
+
+- name: "Import systemd tasks."
+  ansible.builtin.import_tasks: "systemd.yml"

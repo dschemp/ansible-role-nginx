@@ -1,0 +1,6 @@
+---
+- name: "Restart {{ role_name }}."
+  become: true
+  ansible.builtin.service:
+    name: "{{ nginx_daemon_name }}"
+    state: "restarted"

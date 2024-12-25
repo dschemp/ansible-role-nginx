@@ -1,0 +1,6 @@
+---
+# Install generic configuration
+
+# Install specific configurations
+
+# ! notify: "Restart {{ role_name }}."

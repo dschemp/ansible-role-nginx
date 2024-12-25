@@ -1,0 +1,5 @@
+---
+- name: "Install system packages."
+  ansible.builtin.package:
+    name: "{{ nginx_system_packages }}"
+    state: "present"

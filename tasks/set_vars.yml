@@ -1,0 +1,18 @@
+---
+- name: "Set platform/version specific variables."
+  ansible.builtin.include_vars: "{{ __nginx_vars_file }}"
+  loop: "{{ __nginx_vars_file_list }}"
+  vars:
+    __nginx_vars_file_list:
+      - "OS-{{ ansible_facts['os_family'] }}.yml"
+      - "OS-{{ ansible_facts['os_family'] }}-{{ ansible_facts['distribution_major_version'] }}.yml"
+      - "D-{{ ansible_facts['distribution'] }}.yml"
+      - "D-{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'] }}.yml"
+      - "D-{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_version'] }}.yml"
+    __nginx_vars_file: "{{ role_path }}/vars/{{ item }}"
+  when: "__nginx_vars_file is file"
+
+- name: "Define nginx_system_packages."
+  when: "nginx_system_packages is not defined"
+  ansible.builtin.set_fact:
+    nginx_system_packages: "{{ __nginx_system_packages | list }}"

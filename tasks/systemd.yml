@@ -1,0 +1,6 @@
+---
+- name: "Set service state."
+  ansible.builtin.systemd_service:
+    name: "{{ nginx_daemon_name }}"
+    state: "started"
+    enabled: true

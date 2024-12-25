@@ -1,0 +1,5 @@
+---
+nginx_daemon_name: "nginx"
+
+__nginx_system_packages:
+  - "nginx"
