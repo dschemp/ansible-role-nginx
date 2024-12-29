@@ -1,0 +1,18 @@
+{{ ansible_managed | comment }}
+
+ssl_session_timeout    1d;
+ssl_session_cache      shared:SSL:10m;
+ssl_session_tickets    off;
+
+{% if nginx_tls_min_version == "tls13" %}
+{# Mozilla Modern configuration #}
+ssl_protocols          TLSv1.3;
+{% elif nginx_tls_min_version == "tls12" %}
+{# Mozilla Intermediate configuration #}
+# Diffie-Hellman parameter for DHE ciphersuites
+ssl_dhparam            {{ nginx_conf_dir }}/dhparam.pem;
+
+# Mozilla Intermediate configuration
+ssl_protocols          TLSv1.2 TLSv1.3;
+ssl_ciphers            {{ nginx_tls_cipher_suites | join(':') }};
+{% endif %}

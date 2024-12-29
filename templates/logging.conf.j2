@@ -1,0 +1,18 @@
+{{ ansible_managed | comment }}
+
+log_not_found    off;
+
+{% if nginx_log_access_enabled %}
+log_format    main  '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+access_log    {{ nginx_log_dir }}/access.log main;
+{% else %}
+access_log    off;
+{% endif %}
+{% if nginx_log_error_enabled %}
+{# # only log critical errors #}
+error_log     {{ nginx_log_dir }}/error.log {{ nginx_log_error_level }};
+{% else %}
+error_log     /dev/null;
+{% endif %}
