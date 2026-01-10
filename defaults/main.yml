@@ -15,6 +15,12 @@ nginx_tls_cipher_suites:
   - "DHE-RSA-AES128-GCM-SHA256"
   - "DHE-RSA-AES256-GCM-SHA384"
 
+nginx_tls_certificates: []
+# nginx_tls_certificates:
+#   - name: ""
+#     certificate_content: "" # will ne stored under "{{ nginx_certs_dir }}/{{ name }}.cer"
+#     private_key_content: "" # will ne stored under "{{ nginx_certs_dir }}/{{ name }}.key"
+
 nginx_sites:
   default: |
     server {

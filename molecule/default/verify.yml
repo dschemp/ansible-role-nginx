@@ -1,0 +1,14 @@
+---
+- name: "Verify."
+  hosts: "all"
+  tasks:
+    - name: "Perform HTTP request against nginx."
+      ansible.builtin.uri:
+        url: "http://localhost:80"
+        status_code: 200
+
+    - name: "Perform HTTPS request against nginx."
+      ansible.builtin.uri:
+        url: "https://localhost:443"
+        ca_path: "/etc/nginx/certs/ca.cer"
+        status_code: 200

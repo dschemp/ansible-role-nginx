@@ -2,5 +2,20 @@
 - name: "Converge."
   hosts: "nginx"
   become: true
-  roles:
-    - role: "dschemp.nginx"
+  tasks:
+    - name: "Include role."
+      vars:
+        nginx_sites:
+          default: |
+            {{ lookup('template', 'nginx_localhost.conf.j2') }}
+        nginx_tls_certificates:
+          - name: "ca"
+            certificate_content: |
+              {{ lookup('file', playbook_dir ~ '/files/tls/server.cer') }}
+          - name: "localhost"
+            certificate_content: |
+              {{ lookup('file', playbook_dir ~ '/files/tls/server.cer') }}
+            private_key_content: |
+              {{ lookup('file', playbook_dir ~ '/files/tls/server.key') }}
+      ansible.builtin.include_role:
+        name: "dschemp.nginx"

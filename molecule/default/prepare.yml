@@ -1,0 +1,32 @@
+---
+- name: "Prepare TLS server certificate."
+  hosts: "localhost"
+  connection: "local"
+  gather_facts: false
+  tasks:
+    - name: "Create TLS server files dir."
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/files/tls"
+        state: "directory"
+
+    - name: "Generate private key."
+      community.crypto.openssl_privatekey:
+        path: "{{ playbook_dir }}/files/tls/server.key"
+
+    - name: "Create certificate signing request (CSR) for self-signed certificate."
+      community.crypto.openssl_csr_pipe:
+        privatekey_path: "{{ playbook_dir }}/files/tls/server.key"
+        common_name: "localhost"
+        subject_alt_name:
+          - "DNS:localhost"
+          - "IP:127.0.0.1"
+          - "IP:::1"
+      register: "csr"
+
+    - name: "Create simple self-signed certificate."
+      community.crypto.x509_certificate:
+        path: "{{ playbook_dir }}/files/tls/server.cer"
+        csr_content: "{{ csr.csr }}"
+        privatekey_path: "{{ playbook_dir }}/files/tls/server.key"
+        selfsigned_not_after: "+14d"
+        provider: "selfsigned"

@@ -45,3 +45,55 @@
   loop_control:
     label: "{{ item.key }}"
   notify: "Restart {{ role_name }}."
+
+- name: "Copy TLS server certificates."
+  when: "nginx_tls_certificates | length > 0"
+  block:
+    - name: "Create TLS certs dir."
+      become: true
+      ansible.builtin.file:
+        path: "{{ nginx_certs_dir }}"
+        owner: "root"
+        group: "root"
+        mode: "0750"
+        state: "directory"
+
+    - name: "Copy TLS certificate."
+      become: true
+      ansible.builtin.copy:
+        content: |
+          {{ item.certificate_content }}
+        dest: "{{ nginx_certs_dir }}/{{ item.name }}.cer"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+      loop: "{{ nginx_tls_certificates }}"
+      loop_control:
+        label: "{{ item.name }}"
+      notify: "Restart {{ role_name }}."
+
+    - name: "Copy TLS private key."
+      when: "item.private_key_content is defined"
+      become: true
+      ansible.builtin.copy:
+        content: |
+          {{ item.private_key_content }}
+        dest: "{{ nginx_certs_dir }}/{{ item.name }}.key"
+        owner: "root"
+        group: "root"
+        mode: "0640"
+      loop: "{{ nginx_tls_certificates }}"
+      loop_control:
+        label: "{{ item.name }}"
+      notify: "Restart {{ role_name }}."
+
+# We have to do config validation as a seperate task because the validate parameter
+# of the template module requires us to have an "%s" for the config file path in the command
+# which 'nginx -t' doesn't support.
+- name: "Validate config."
+  become: true
+  ansible.builtin.command:
+    cmd: "nginx -t"
+  register: "__nginx_validate_config"
+  changed_when: false
+  failed_when: "'test failed' in __nginx_validate_config.stdout"

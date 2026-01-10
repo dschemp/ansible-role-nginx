@@ -5,6 +5,7 @@ nginx_user: "nginx"
 nginx_group: "nginx"
 
 nginx_conf_dir: "/etc/nginx"
+nginx_certs_dir: "{{ nginx_conf_dir }}/certs"
 nginx_confd_dir: "{{ nginx_conf_dir }}/conf.d"
 nginx_sites_dir: "{{ nginx_conf_dir }}/sites-enabled"
 nginx_log_dir: "/var/log/nginx"
