@@ -81,7 +81,7 @@
         dest: "{{ nginx_certs_dir }}/{{ item.name }}.key"
         owner: "root"
         group: "root"
-        mode: "0640"
+        mode: "0600"
       loop: "{{ nginx_tls_certificates }}"
       loop_control:
         label: "{{ item.name }}"
