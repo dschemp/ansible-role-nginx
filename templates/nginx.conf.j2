@@ -26,12 +26,13 @@ http {
     client_max_body_size      16M;
     reset_timedout_connection on; {# allow the server to close connection on non responding client, this will free up memory #}
 
-    {# MIME #}
+    {# MIME -#}
     include         {{ nginx_conf_dir }}/mime.types;
     default_type    application/octet-stream;
 
-    {# Load modular configuration files from the /etc/nginx/conf.d directory. #}
+    {# Load modular configuration files from the /etc/nginx/conf.d directory. -#}
     include {{ nginx_confd_dir }}/*.conf;
-
+{% if ansible_facts.os_family in ['Debian'] %}
     include {{ nginx_sites_dir }}/*;
+{% endif %}
 }

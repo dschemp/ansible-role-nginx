@@ -1,0 +1,5 @@
+---
+nginx_user: "nginx"
+nginx_group: "nginx"
+
+nginx_sites_dir: "{{ nginx_confd_dir }}"

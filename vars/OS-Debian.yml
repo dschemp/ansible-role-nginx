@@ -1,0 +1,5 @@
+---
+nginx_user: "www-data"
+nginx_group: "www-data"
+
+nginx_sites_dir: "{{ nginx_conf_dir }}/sites-enabled"
