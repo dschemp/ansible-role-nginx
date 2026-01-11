@@ -30,9 +30,11 @@ http {
     include         {{ nginx_conf_dir }}/mime.types;
     default_type    application/octet-stream;
 
+{% if ansible_facts.os_family not in ['RedHat'] %}
     {# Load modular configuration files from the /etc/nginx/conf.d directory. -#}
     include {{ nginx_confd_dir }}/*.conf;
-{% if ansible_facts.os_family in ['Debian'] %}
     include {{ nginx_sites_dir }}/*;
+{% else %}
+    include {{ nginx_confd_dir }}/*;
 {% endif %}
 }
