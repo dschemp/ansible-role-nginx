@@ -2,11 +2,11 @@
 - name: "Restart {{ role_name }}."
   become: true
   ansible.builtin.service:
-    name: "{{ nginx_daemon_name }}"
+    name: "{{ nginx_service_name }}"
     state: "restarted"
 
 - name: "Reload {{ role_name }}."
   become: true
   ansible.builtin.service:
-    name: "{{ nginx_daemon_name }}"
+    name: "{{ nginx_service_name }}"
     state: "reloaded"

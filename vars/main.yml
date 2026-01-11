@@ -1,5 +1,5 @@
 ---
-nginx_daemon_name: "nginx"
+nginx_service_name: "nginx"
 
 nginx_conf_dir: "/etc/nginx"
 nginx_certs_dir: "{{ nginx_conf_dir }}/certs"
